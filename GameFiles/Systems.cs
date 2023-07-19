@@ -62,7 +62,7 @@ namespace Basic2DGame.GameFiles
                 (
                 0,
                 0,
-                ((int)GlobalData.StandardFont.MeasureString(longestString.Text).X + spacing * 2) * scale,
+                ((int)GlobalData.MainFont.MeasureString(longestString.Text).X + spacing * 2) * scale,
                 spacing * 2 + (strings.Count * (textSize + spacing))
                 ), RectColor);
 
@@ -70,15 +70,15 @@ namespace Basic2DGame.GameFiles
             {
                 // If the debug string has a lifespan, draw it.
                 if (strings[i].LifeSpan >= 0)
-                    GlobalData.SpriteBatch.DrawString(GlobalData.StandardFont, strings[i].Text, new Vector2(spacing, i * (textSize + spacing)), strings[i].Color, 0f, Vector2.Zero, (float)scale, SpriteEffects.None, 0f);
-                // Else if the debug string is immortal, draw it.
-                else
+                    GlobalData.SpriteBatch.DrawString(GlobalData.MainFont, strings[i].Text, new Vector2(spacing, i * (textSize + spacing)), strings[i].Color, 0f, Vector2.Zero, (float)scale, SpriteEffects.None, 0f);
+                // Else if the debug string is a complex string, draw it.
+                else if (strings[i].Text.Contains(':'))
                 {
                     // Big Complex Multi-Colored Drawing
                     if (strings[i].Text.Contains("FPS:"))
                     {
                         GlobalData.SpriteBatch.DrawString(
-                            GlobalData.StandardFont,
+                            GlobalData.MainFont,
                             // Only the first 4 characters
                             strings[i].Text[..4],
                             new Vector2(
@@ -92,11 +92,11 @@ namespace Basic2DGame.GameFiles
                             0f);
 
                         GlobalData.SpriteBatch.DrawString(
-                            GlobalData.ItalicStandardFont,
+                            GlobalData.MainFont,
                             // Only the last characters, starting at 4
                             strings[i].Text[4..],
                             new Vector2(
-                                spacing + GlobalData.StandardFont.MeasureString(strings[i].Text[..4]).X * scale,
+                                spacing + GlobalData.MainFont.MeasureString(strings[i].Text[..4]).X * scale,
                                 i * (textSize + spacing)),
                             Color.LightGoldenrodYellow,
                             0f,
@@ -107,12 +107,12 @@ namespace Basic2DGame.GameFiles
                     }
 
                     // Big Complex Multi-Colored Drawing
-                    else if (strings[i].Text.Contains("Number of Entities:"))
+                    else if (strings[i].Text.Contains("Camera Position:"))
                     {
                         GlobalData.SpriteBatch.DrawString(
-                            GlobalData.StandardFont,
-                            // Only the first 18 characters
-                            strings[i].Text[..19],
+                            GlobalData.MainFont,
+                            // Only the first 16 characters
+                            strings[i].Text[..17],
                             new Vector2(
                                 spacing,
                                 i * (textSize + spacing)),
@@ -124,11 +124,11 @@ namespace Basic2DGame.GameFiles
                             0f);
 
                         GlobalData.SpriteBatch.DrawString(
-                            GlobalData.ItalicStandardFont,
-                            // Only the last characters, starting at 19
-                            strings[i].Text[19..],
+                            GlobalData.MainFont,
+                            // Only the last characters, starting at 17
+                            strings[i].Text[17..],
                             new Vector2(
-                                spacing + GlobalData.StandardFont.MeasureString(strings[i].Text[..19]).X * scale,
+                                spacing + GlobalData.MainFont.MeasureString(strings[i].Text[..17]).X * scale,
                                 i * (textSize + spacing)),
                             Color.Lime,
                             0f,
@@ -138,12 +138,59 @@ namespace Basic2DGame.GameFiles
                             0f);
                     }
                 }
+                // Else if the debug string is immortal, draw it.
+                else if (strings[i].LifeSpan < 0)
+                    GlobalData.SpriteBatch.DrawString(GlobalData.MainFont, strings[i].Text, new Vector2(spacing, i * (textSize + spacing)), strings[i].Color, 0f, Vector2.Zero, (float)scale, SpriteEffects.None, 0f);
             }
         }
 
         public static void RenderMap()
         {
+            // The first visible tile is at is 5, 3 on the map.
+            int RoundedPositionX = (int)Math.Floor(Camera.Position.X); // 5
+            int RoundedPositionY = (int)Math.Floor(Camera.Position.Y); // 3
 
+            // The offset is the distance from the camera's position, to the first visible tile.
+            float XOffset = Camera.Position.X - RoundedPositionX; // 0.23
+            float YOffset = Camera.Position.Y - RoundedPositionY; // 0.45
+
+            // The current map is the map that the camera is currently on.
+            Map CurrentMap = MapSystem.Map;
+
+            // The first visible tile is the tile at the camera's position rounded down.
+            Tile FirstVisibleTile = CurrentMap.GetTile(RoundedPositionX, RoundedPositionY);
+
+            // The last visible tile is the tile at the camera's position, plus the width and height of the viewport, rounded down.
+            Tile LastVisibleTile = CurrentMap.GetTile(RoundedPositionX + (Camera.Viewport.Width / CurrentMap.TileWidth), RoundedPositionY + (Camera.Viewport.Height / CurrentMap.TileHeight));
+            
+            // Now, we can loop through the tiles on screen, and draw them.
+            for (int y = RoundedPositionY; y <= RoundedPositionY + (Camera.Viewport.Height / CurrentMap.TileHeight); y++)
+            {
+                for (int x = RoundedPositionX; x <= RoundedPositionX + (Camera.Viewport.Width / CurrentMap.TileWidth); x++)
+                {
+                    Tile CurrentTile = CurrentMap.GetTile(x, y);
+                    
+                    if (CurrentTile.TileId == -1)
+                        continue;
+                    else
+                    {
+                        switch (CurrentTile.TileId)
+                        {
+                            case 0:
+                                GlobalData.SpriteBatch.Draw(
+                                    CurrentMap.TileSet.Texture,
+                                    new Rectangle(
+                                        (int)((x - RoundedPositionX) * CurrentMap.TileWidth - XOffset * CurrentMap.TileWidth),
+                                        (int)((y - RoundedPositionY) * CurrentMap.TileHeight - YOffset * CurrentMap.TileHeight),
+                                        CurrentMap.TileWidth,
+                                        CurrentMap.TileHeight),
+                                    CurrentMap.TileSet.GetSourceRectangle(CurrentTile.TileId),
+                                    Color.White);
+                                break;
+                        }    
+                    }
+                }
+            }
         }
     }
 
@@ -268,9 +315,7 @@ namespace Basic2DGame.GameFiles
         private static void GetInputs()
         {
             if (Shortcuts.CatchPressedKey(GlobalData.KeyBinds["Show Debug"]))
-            {
                 GlobalData.IsDebugShown = !GlobalData.IsDebugShown;
-            }
         }
     }
 
@@ -279,6 +324,48 @@ namespace Basic2DGame.GameFiles
     /// </summary>
     internal struct MapSystem
     {
+        /// <summary>
+        /// The current map.
+        /// </summary>
+        public static Map Map { get; set; }
 
+        /// <summary>
+        /// The current map ID.
+        /// </summary>
+        public static int CurrentMapID { get; set; }
+
+        public static Dictionary<int, string> MapNames { get; set; }
+
+        public static void Initialize()
+        {
+            // Initialize the map
+            Map = new Map("Maps\\ExampleMap.xml");
+
+            CurrentMapID = 0;
+
+            MapNames = new Dictionary<int, string>()
+            {
+                {0, "Example Map" }
+            };
+        }
+
+        public static void Update()
+        {
+            // Print map info to the debug console
+            if (GlobalData.IsDebugShown && Shortcuts.CatchPressedKey(Keys.M))
+            {
+                DebugString.Add("Map Info:", 480, Color.White);
+                DebugString.Add("==================================", 480, Color.White);
+                DebugString.Add($"Map: {MapNames[CurrentMapID]}", 480, Color.White);
+                DebugString.Add($"ID: {CurrentMapID}", 480, Color.White);
+
+                DebugString.Add("", 480, Color.White);
+
+                DebugString.Add($"Map Width: {Map.TilesWide}", 480, Color.White);
+                DebugString.Add($"Map Height: {Map.TilesHigh}", 480, Color.White);
+                DebugString.Add($"Tile Width: {Map.TileWidth}", 480, Color.White);
+                DebugString.Add($"Tile Height: {Map.TileHeight}", 480, Color.White);
+            }
+        }
     }
 }
