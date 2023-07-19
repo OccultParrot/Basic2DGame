@@ -7,6 +7,7 @@ using System.Linq;
 
 namespace Basic2DGame.GameFiles
 {
+
     /// <summary>
     /// The RenderSystem is responsible for drawing everything.
     /// </summary>
@@ -139,6 +140,11 @@ namespace Basic2DGame.GameFiles
                 }
             }
         }
+
+        public static void RenderMap()
+        {
+
+        }
     }
 
     /// <summary>
@@ -177,10 +183,9 @@ namespace Basic2DGame.GameFiles
     /// </summary>
     internal struct InputSystem
     {
-        private static Action ShowDebug = () => GlobalData.IsDebugShown = !GlobalData.IsDebugShown;
         public static void Update()
         {
-            CatchInputs();
+            GetInputs();
 
             GlobalData.PreviousKeyboardState = Keyboard.GetState();
             GlobalData.PreviousMouseState = Mouse.GetState();
@@ -189,7 +194,7 @@ namespace Basic2DGame.GameFiles
         /// Used for handling the input of text boxes.
         /// </summary>
         /// <param name="textBox"> The textbox to catch input </param>
-        public static void UpdateTextBox(TextBox textBox)
+        public static void AlterTextBox(TextBox textBox)
         {
             KeyboardState currentKeyboardState = Keyboard.GetState();
 
@@ -260,12 +265,20 @@ namespace Basic2DGame.GameFiles
         /// <summary>
         /// Catches all inputs from the keyboard and mouse, and handles them accordingly.
         /// </summary>
-        public static void CatchInputs()
+        private static void GetInputs()
         {
             if (Shortcuts.CatchPressedKey(GlobalData.KeyBinds["Show Debug"]))
             {
-                ShowDebug.Invoke();
+                GlobalData.IsDebugShown = !GlobalData.IsDebugShown;
             }
         }
+    }
+
+    /// <summary>
+    /// The system for everything related to maps, such as rendering, and altering information.
+    /// </summary>
+    internal struct MapSystem
+    {
+
     }
 }
