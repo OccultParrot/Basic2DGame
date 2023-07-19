@@ -35,17 +35,14 @@ namespace Basic2DGame.GameFiles
         /// <summary>
         /// The default font used for rendering text.
         /// </summary>
-        public static SpriteFont StandardFont { get; set; }
-
-        /// <summary>
-        /// The default font used for rendering text (Italics).
-        /// </summary>
-        public static SpriteFont ItalicStandardFont { get; set; }
+        public static SpriteFont MainFont { get; set; }
 
         /// <summary>
         /// The ContentManager used for this project.
         /// </summary>
         public static ContentManager Content { get; set; }
+
+        public static Texture2D MissingTex { get; set; }
 
         /// <summary>
         /// The viewport used for this project.
@@ -116,8 +113,7 @@ namespace Basic2DGame.GameFiles
             DesiredWindowWidth = 1920;
             DesiredWindowHeight = 1080;
 
-            StandardFont = Content.Load<SpriteFont>("StandardFont");
-            ItalicStandardFont = Content.Load<SpriteFont>("StandardFontItalics");
+            MainFont = Content.Load<SpriteFont>("Fonts\\MainFont");
 
             // Initialize the viewport to match the screen size
             Viewport = new Viewport(0, 0, DesiredWindowWidth, DesiredWindowHeight);
@@ -132,7 +128,7 @@ namespace Basic2DGame.GameFiles
             DebugStrings = new()
             {
                 new DebugString($"FPS: {FpsSystem.FramesPerSecond}", -1, Color.White, false),
-                //new DebugString($"Number of Entities: {Entities.Count}", -1, Color.White, false)
+                new DebugString($"Camera Position: {Camera.Position}", -1, Color.White, false)
             };
 
             // Changing the size of the window
@@ -151,7 +147,7 @@ namespace Basic2DGame.GameFiles
         {
             // Update the debug strings
             DebugStrings[0] = new DebugString($"FPS: {FpsSystem.FramesPerSecond}", -1, Color.White, false);
-            //DebugStrings[1] = new DebugString($"Number of Entities: {Entities.Count}", -1, Color.White, false);
+            DebugStrings[1] = new DebugString($"Camera Position: {Camera.Position}", -1, Color.White, false);
 
             for (int i = 0; i < DebugStrings.Count; i++)
             {
