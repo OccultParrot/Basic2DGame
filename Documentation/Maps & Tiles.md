@@ -71,7 +71,7 @@ Both the key and the value of the dictionary are strings, so you can store any t
 This method is used to get the value of a property if present in the dictionary.
 
 ```csharp
-// Getting the property "Collision" from the tile
+// Getting the value of the property "Collision" from the tile
 string collision = tile.GetProperty("Collision");
 ```
 
