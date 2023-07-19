@@ -19,7 +19,7 @@ There are a lot of functions in the ShortCuts file, and I will be covering each 
 
 Here is a list of them with links to them:
 
- - [CatchPressedKey]
+ - [CatchPressedKey](#catchpressedkey)
 
 Lol, there are not many yet.
 
