@@ -24,11 +24,6 @@
     <None Remove="Maps\ExampleMap.xml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Maps\">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="Icon.ico" />
     <EmbeddedResource Include="Icon.bmp" />
   </ItemGroup>
