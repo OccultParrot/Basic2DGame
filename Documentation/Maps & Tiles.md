@@ -98,6 +98,10 @@ Prints:
 Properties in Tile:
 ===================
 Collision: true
+Rotation: 0
+Visible: true
+Layer: 0
+Color: Color.White // I don't actually know what it will print for color, I haven't tested it yet.
 ```
 
 ## Properties
