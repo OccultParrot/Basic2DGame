@@ -16,7 +16,7 @@ When using basic MonoGame, there are things you wish you could do with it, but y
 
 I have added a few extensions to MonoGame:
 
- - [DrawRectangle]
+ - [DrawRectangle](#drawrectangle)
 
 Not many yet lol
 
