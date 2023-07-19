@@ -79,7 +79,7 @@ string collision = tile.GetProperty("Collision");
 
 This method is used to set the value of a property in the dictionary.
 ```csharp
-// Setting the property "Collision" to "true"
+// Setting the value of the property "Collision" to "true"
 tile.SetProperty("Collision", "true");
 ```
 
