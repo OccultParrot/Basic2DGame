@@ -9,10 +9,11 @@ In this document, I will explain how to use the map and tile classes, along with
 	* [Map Methods](#map-methods)
 
  - [Tile Class](#tile-class)
-	* [Methods](#methods)
+	* [Tile Methods](#methods)
 		+ [GetProperty](#getproperty)
 		+ [SetProperty](#setproperty)
 		+ [ListProperties](#listproperties)
+	* [Tile Properties](#properties)
  
  - [Camera struct](#camera-struct)
 
@@ -56,14 +57,13 @@ Rarely will you ever need to initialize the tile class yourself, as the map clas
 but if you do, here is how.
 
 ```csharp
-Tile tile = new(new Vector2(0, 0));
+Tile tile = new();
 ```
-
-The constructor takes in a Vector2 for the position of the tile.
 
 In the Tile class there are two variables, a Vector2 for position and a Dictionary for properties.
 The dictionary is used to store any custom properties that you may want to add to the tile, such as rotation, or if the player can walk on it.
 Both the key and the value of the dictionary are strings, so you can store any type of data you want in the dictionary.
+
 ## Methods
 
 ### GetProperty
@@ -99,6 +99,18 @@ Properties in Tile:
 ===================
 Collision: true
 ```
+
+## Properties
+
+There are a few properties in the tile class that you can use to get information about the tile.
+
+| Property  | Default Value | Use                                             |
+|---------- |---------------|-------------------------------------------------|
+| Collision | false         | Whether or not the player can walk on the tile. |
+| Rotation  | 0             | The rotation of the tile in degrees.            |
+| Visible   | true          | Whether or not the tile is visible.             |
+| Layer     | 0             | The layer that the tile is on.                  |
+| Color     | Color.White   | The color the tile texture is printed on.       |
 
 # Camera struct
 
