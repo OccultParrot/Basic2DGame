@@ -9,8 +9,8 @@
 
 		<!-- Size of the map in tiles -->
 		<Size>
-			<X>10</X>
-			<Y>10</Y>
+			<X>2</X>
+			<Y>1</Y>
 		</Size>
 		
 		<!-- The size of the tiles in pixels -->
@@ -25,12 +25,8 @@
 
 	<Grid>
 		<Rows>
-			<Row>
-				<Tile>
-					<!-- Tile Position -->
-					<X>0</X>
-					<Y>0</Y>
-
+			<Row0>
+				<Tile0>
 					<!-- Tile Texture Key -->
 					<Key>0</Key>
 
@@ -45,8 +41,25 @@
 							<Value>Value2</Value>
 						</Property>
 					</Properties>
-				</Tile>
-			</Row>
+				</Tile0>
+
+				<Tile1>
+					<!-- Tile Texture Key -->
+					<Key>1</Key>
+
+					<!-- Tile Properties -->
+					<Properties>
+						<Property>
+							<Name>Property1</Name>
+							<Value>Value1</Value>
+						</Property>
+						<Property>
+							<Name>Property2</Name>
+							<Value>Value2</Value>
+						</Property>
+					</Properties>
+				</Tile1>
+			</Row0>
 		</Rows>
 	</Grid>
 </MapData>
