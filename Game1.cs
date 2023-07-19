@@ -12,9 +12,6 @@ namespace Basic2DGame
         private GraphicsDeviceManager _graphics;
         private SpriteBatch _spriteBatch;
 
-        // DELETE THIS:
-        Map map;
-
         public Game1()
         {
             GlobalData.Graphics = new GraphicsDeviceManager(this);
@@ -25,8 +22,11 @@ namespace Basic2DGame
 
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
             GlobalData.Initialize();
+
+            DebugString.Add("Press 'M' to view map details", -1, Color.White);
+
+            MapSystem.Initialize();
 
             base.Initialize();
         }
@@ -34,21 +34,17 @@ namespace Basic2DGame
         protected override void LoadContent()
         {
             GlobalData.SpriteBatch = new SpriteBatch(GraphicsDevice);
-
-            // TODO: use this.Content to load your game content here
         }
 
         protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-            // TODO: Add your update logic here
-            if (Shortcuts.CatchPressedKey(Keys.N))
-            {
-                map = new Map("Maps\\ExampleMap.xml");
-            }
             FpsSystem.Update((float)gameTime.ElapsedGameTime.TotalSeconds);
             GlobalData.Update();
+
+            MapSystem.Update();
+
             InputSystem.Update();
 
             
@@ -63,7 +59,6 @@ namespace Basic2DGame
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            // TODO: Add your drawing code here
             RenderSystem.GeneralRender();
             base.Draw(gameTime);
         }
