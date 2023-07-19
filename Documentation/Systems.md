@@ -7,10 +7,10 @@ In this document we will be covering the systems that are used in the game, and 
  - [Introduction](#introduction)
  - [What is it?](#what-is-it)
  - [Implemented Systems](#implemented-systems)
-	* [RenderSystem]
-	* [FpsSystem]
-	* [InputSystem]
-	* [MapSystem]
+	* [RenderSystem](#rendersystem)
+	* [FpsSystem](fpssystem)
+	* [InputSystem](inputsystem)
+	* [MapSystem](mapsystem)
 
 # Introduction
 
@@ -25,10 +25,10 @@ Along with those main functions, there are also other functions that you can cal
 
 In the project there are currently 4 systems, and they are:
 
- - [RenderSystem]
- - [FpsSystem]
- - [InputSystem]
- - [MapSystem]
+ - [RenderSystem](#rendersystem)
+ - [FpsSystem](fpssystem)
+ - [InputSystem](inputsystem)
+ - [MapSystem](mapsystem)
 
 ## RenderSystem
 
