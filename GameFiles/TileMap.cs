@@ -12,69 +12,39 @@ namespace Basic2DGame.GameFiles
     internal struct Camera
     {
         public static Vector2 Position { get; set; } = Vector2.Zero;
+
+        public static float Zoom { get; set; } = 1f;
+
+        public static Rectangle Viewport => new Rectangle((int)Position.X, (int)Position.Y, GlobalData.DesiredWindowWidth, GlobalData.DesiredWindowHeight);
         public static Matrix TransformMatrix => Matrix.CreateTranslation(-Position.X, -Position.Y, 0f);
     }
 
-    internal class Tile
+    public class Tile
     {
-        public Vector2 Position { get; set; }
+        public int X { get; set; }
+        public int Y { get; set; }
+        public int TileId { get; set; }
+        public int Rotation { get; set; }
+        public bool FlipX { get; set; }
 
-        public int TilesetIndex { get; set; }
-
-        public Dictionary<string, string> Properties { get; set; }
-
-        public Tile()
+        public Tile(int x, int y, int tileId, int rotation, bool flipX)
         {
-            // Sets the default properties of the tile.
-            Properties = new()
-            {
-                { "Collision", "false" },
-                { "Rotation", "0" },
-                { "Visable", "true" },
-                { "Layer", "0" },
-                { "Color", "White"}
-            };
-        }
-
-        public void ListProperties()
-        {
-            DebugString.Add("Properties in Tile:", 300, Color.White);
-            DebugString.Add("===================", 300, Color.White);
-            foreach (var property in Properties)
-            {
-                DebugString.Add($"{property.Key}: {property.Value}", 300, Color.White);
-            }
-        }
-
-        public void SetProperty(string name, string value)
-        {
-            if(!Properties.TryAdd(name, value))
-                Properties[name] = value;
-        }
-
-        public string GetProperty(string name)
-        {
-            return Properties[name];
+            X = x;
+            Y = y;
+            TileId = tileId;
+            Rotation = rotation;
+            FlipX = flipX;
         }
     }
 
-    internal class Map
+    public class Map
     {
-
-        /// <summary>
-        /// Makes a new map.
-        /// </summary>
-        /// <param name="path">The path to the .XML file the maps information is stored at.</param>
-        public string Name { get; set; }
-        public string Author { get; set; }
-        public string Description { get; set; }
-        public string Version { get; set; }
-        public int Width { get; set; }
-        public int Height { get; set; }
-        public string TileSize { get; set; }
-        public string Tileset { get; set; }
-
+        public int TilesWide { get; private set; }
+        public int TilesHigh { get; private set; }
+        public int TileWidth { get; private set; }
+        public int TileHeight { get; private set; }
         public Tile[,] TileMap { get; private set; }
+        public TileSet TileSet { get; private set; }
 
         public Map(string xmlFilePath)
         {
@@ -88,54 +58,81 @@ namespace Basic2DGame.GameFiles
                 XmlDocument xmlDoc = new XmlDocument();
                 xmlDoc.Load(xmlFilePath);
 
-                XmlNode metaDataNode = xmlDoc.SelectSingleNode("/MapData/MetaData");
+                // Read map information
+                XmlNode mapNode = xmlDoc.SelectSingleNode("tilemap");
+                TilesWide = int.Parse(mapNode.Attributes["tileswide"].Value);
+                TilesHigh = int.Parse(mapNode.Attributes["tileshigh"].Value);
+                TileWidth = int.Parse(mapNode.Attributes["tilewidth"].Value);
+                TileHeight = int.Parse(mapNode.Attributes["tileheight"].Value);
 
-                Name = GetNodeValue(metaDataNode, "Name");
-                Author = GetNodeValue(metaDataNode, "Author");
-                Description = GetNodeValue(metaDataNode, "Description");
-                Version = GetNodeValue(metaDataNode, "Version");
-                Width = int.Parse(GetNodeValue(metaDataNode, "Size/X"));
-                Height = int.Parse(GetNodeValue(metaDataNode, "Size/Y"));
-                TileSize = GetNodeValue(metaDataNode, "TileSize");
-                Tileset = GetNodeValue(metaDataNode, "Tileset");
+                string tileSetPath = mapNode.Attributes["tileset"].Value;
+                TileSet = new TileSet(tileSetPath, TileWidth, TileHeight);
 
-                XmlNode Grid = xmlDoc.SelectSingleNode("/MapData/Grid");
+                // Read tile data
+                XmlNodeList layerNodes = xmlDoc.SelectNodes("tilemap/layer");
+                XmlNodeList tileNodes = layerNodes[0].SelectNodes("tile");
+                TileMap = new Tile[TilesWide, TilesHigh];
 
-                TileMap = new Tile[Width, Height];
-
-                for (int y = 0; y < Height; y++)
+                foreach (XmlNode tileNode in tileNodes)
                 {
-                    XmlNode rowNode = Grid.SelectSingleNode($"Row{y}");
+                    int x = int.Parse(tileNode.Attributes["x"].Value);
+                    int y = int.Parse(tileNode.Attributes["y"].Value);
+                    int tileId = int.Parse(tileNode.Attributes["tile"].Value);
+                    int rotation = int.Parse(tileNode.Attributes["rot"].Value);
+                    bool flipX = bool.Parse(tileNode.Attributes["flipX"].Value);
 
-                    for (int x = 0; x < Width; x++)
-                    {
-                        Tile tempTile = new();
-                        XmlNode tileNode = rowNode.SelectSingleNode($"Tile{x}");
-
-                        // Sets the position of the tile.
-                        tempTile.Position = new Vector2(x, y);
-
-                        // Sets the tileset index of the tile.
-                        tempTile.TilesetIndex = int.Parse(GetNodeValue(tileNode, "Key"));
-
-                        // Sets the properties of the tile.
-                        foreach (XmlNode propertyNode in tileNode.ChildNodes)
-                        {
-                            tempTile.SetProperty(propertyNode.Name, propertyNode.InnerText);
-                        }
-                    }
+                    TileMap[x, y] = new Tile(x, y, tileId, rotation, flipX);
                 }
             }
             catch (Exception ex)
             {
-                DebugString.Add("Error loading map data: " + ex.Message, 999, Color.IndianRed);
+                Console.WriteLine("Error loading map data: " + ex.Message);
             }
         }
 
-        private string GetNodeValue(XmlNode parentNode, string nodeName)
+        // Add other useful functions here...
+
+        // Get a specific tile at (x, y) coordinates
+        public Tile GetTile(int x, int y)
         {
-            XmlNode node = parentNode.SelectSingleNode(nodeName);
-            return node?.InnerText;
+            if (x >= 0 && x < TilesWide && y >= 0 && y < TilesHigh)
+            {
+                return TileMap[x, y];
+            }
+            return null;
+        }
+
+        // Update the data of a specific tile
+        public void SetTile(int x, int y, int tileId, int rotation, bool flipX)
+        {
+            if (x >= 0 && x < TilesWide && y >= 0 && y < TilesHigh)
+            {
+                TileMap[x, y] = new Tile(x, y, tileId, rotation, flipX);
+            }
         }
     }
+    public class TileSet
+    {
+        public Texture2D Texture { get; set;}
+        public int TileWidth { get; set; }
+        public int TileHeight { get; set; }
+        public int TilesWide { get; set; }
+        public int TilesHigh { get; set; }
+
+        public TileSet(string tileSetPath, int tileWidth, int tileHeight)
+        {
+            Texture = GlobalData.Content.Load<Texture2D>(tileSetPath);
+            TileWidth = tileWidth;
+            TileHeight = tileHeight;
+            TilesWide = Texture.Width / tileWidth;
+            TilesHigh = Texture.Height / tileHeight;
+        }
+
+        
+        public Rectangle GetSourceRectangle(int tileID)
+        {
+            // TODO: Make this!
+        }
+    }
+
 }
