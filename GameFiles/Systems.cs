@@ -146,49 +146,36 @@ namespace Basic2DGame.GameFiles
 
         public static void RenderMap()
         {
-            // The first visible tile is at is 5, 3 on the map.
-            int RoundedPositionX = (int)Math.Floor(Camera.Position.X); // 5
-            int RoundedPositionY = (int)Math.Floor(Camera.Position.Y); // 3
+            // Now we can find the size of the view port!
+            int ViewPortWidth = MapSystem.Map.TilesWide * MapSystem.Map.TileWidth;
+            int ViewPortHeight = MapSystem.Map.TilesHigh * MapSystem.Map.TileHeight;
 
-            // The offset is the distance from the camera's position, to the first visible tile.
-            float XOffset = Camera.Position.X - RoundedPositionX; // 0.23
-            float YOffset = Camera.Position.Y - RoundedPositionY; // 0.45
+            // Now we can create the view port!
+            Vector2 ViewPort = new Vector2(ViewPortWidth, ViewPortHeight); // This is used later.
 
-            // The current map is the map that the camera is currently on.
-            Map CurrentMap = MapSystem.Map;
+            // The position of the top left tile is the cameras position divided by the tile size.
+            int TopLeftTileX = Camera.X / MapSystem.Map.TileWidth;
+            int TopLeftTileY = Camera.Y / MapSystem.Map.TileHeight;
 
-            // The first visible tile is the tile at the camera's position rounded down.
-            Tile FirstVisibleTile = CurrentMap.GetTile(RoundedPositionX, RoundedPositionY);
+            // The width of the camera in tiles is the window width divided the camera zoom, divided by the tile width.
+            int CameraWidthInTiles = (int)Math.Floor(GlobalData.DesiredWindowWidth / (Camera.Zoom * GlobalData.RenderScale) / MapSystem.Map.TileWidth);
 
-            // The last visible tile is the tile at the camera's position, plus the width and height of the viewport, rounded down.
-            Tile LastVisibleTile = CurrentMap.GetTile(RoundedPositionX + (Camera.Viewport.Width / CurrentMap.TileWidth), RoundedPositionY + (Camera.Viewport.Height / CurrentMap.TileHeight));
-            
-            // Now, we can loop through the tiles on screen, and draw them.
-            for (int y = RoundedPositionY; y <= RoundedPositionY + (Camera.Viewport.Height / CurrentMap.TileHeight); y++)
+            // The height of the camera in tiles is the window height divided the camera zoom, divided by the tile height.
+            int CameraHeightInTiles = (int)Math.Floor(GlobalData.DesiredWindowHeight / (Camera.Zoom * GlobalData.RenderScale) / MapSystem.Map.TileHeight);
+
+            // Calculating the bottom right tile.
+            int BottomRightTileX = TopLeftTileX + CameraWidthInTiles;
+            int BottomRightTileY = TopLeftTileY + CameraHeightInTiles;
+
+            // Looping through the tiles.
+            for (int y = TopLeftTileY; y <= BottomRightTileY; y++)
             {
-                for (int x = RoundedPositionX; x <= RoundedPositionX + (Camera.Viewport.Width / CurrentMap.TileWidth); x++)
+                for (int x = TopLeftTileX; x <= BottomRightTileX; x++)
                 {
-                    Tile CurrentTile = CurrentMap.GetTile(x, y);
-                    
-                    if (CurrentTile.TileId == -1)
-                        continue;
-                    else
-                    {
-                        switch (CurrentTile.TileId)
-                        {
-                            case 0:
-                                GlobalData.SpriteBatch.Draw(
-                                    CurrentMap.TileSet.Texture,
-                                    new Rectangle(
-                                        (int)((x - RoundedPositionX) * CurrentMap.TileWidth - XOffset * CurrentMap.TileWidth),
-                                        (int)((y - RoundedPositionY) * CurrentMap.TileHeight - YOffset * CurrentMap.TileHeight),
-                                        CurrentMap.TileWidth,
-                                        CurrentMap.TileHeight),
-                                    CurrentMap.TileSet.GetSourceRectangle(CurrentTile.TileId),
-                                    Color.White);
-                                break;
-                        }    
-                    }
+                    // Get the current tile.
+                    Tile CurrentTile = MapSystem.Map.GetTile(x, y);
+
+                    // Draw the tile here.
                 }
             }
         }
@@ -316,6 +303,7 @@ namespace Basic2DGame.GameFiles
         {
             if (Shortcuts.CatchPressedKey(GlobalData.KeyBinds["Show Debug"]))
                 GlobalData.IsDebugShown = !GlobalData.IsDebugShown;
+            
         }
     }
 
@@ -336,12 +324,12 @@ namespace Basic2DGame.GameFiles
 
         public static Dictionary<int, string> MapNames { get; set; }
 
-        public static void Initialize()
+        public static void Initialize(int MapID)
         {
             // Initialize the map
             Map = new Map("Maps\\ExampleMap.xml");
 
-            CurrentMapID = 0;
+            CurrentMapID = MapID;
 
             MapNames = new Dictionary<int, string>()
             {
