@@ -11,12 +11,14 @@ namespace Basic2DGame.GameFiles
 {
     internal struct Camera
     {
-        public static Vector2 Position { get; set; } = Vector2.Zero;
+        // The position of the camera in the world
+        public static int X { get; set; } = 0;
+        public static int Y { get; set; } = 0;
 
         public static float Zoom { get; set; } = 1f;
 
-        public static Rectangle Viewport => new Rectangle((int)Position.X, (int)Position.Y, GlobalData.DesiredWindowWidth, GlobalData.DesiredWindowHeight);
-        public static Matrix TransformMatrix => Matrix.CreateTranslation(-Position.X, -Position.Y, 0f);
+        public static Rectangle Viewport => new Rectangle(X, Y, GlobalData.DesiredWindowWidth, GlobalData.DesiredWindowHeight);
+        public static Matrix TransformMatrix => Matrix.CreateTranslation(-X, -Y, 0f);
     }
 
     public class Tile
@@ -92,7 +94,12 @@ namespace Basic2DGame.GameFiles
 
         // Add other useful functions here...
 
-        // Get a specific tile at (x, y) coordinates
+        /// <summary>
+        /// Get a specific tile at (x, y) coordinates
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <returns>The tile at (x,y) in the map.</returns>
         public Tile GetTile(int x, int y)
         {
             if (x >= 0 && x < TilesWide && y >= 0 && y < TilesHigh)
@@ -128,10 +135,16 @@ namespace Basic2DGame.GameFiles
             TilesHigh = Texture.Height / tileHeight;
         }
 
-        
+
         public Rectangle GetSourceRectangle(int tileID)
         {
-            // TODO: Make this!
+            // Getting the row number by dividing the tileID by the number of tiles in a row, and getting the floor of that value.
+            int row = tileID / TilesWide;
+
+            // Getting the column number by getting the modulus of the tileID and the number of tiles in a row.
+            int column = tileID % TilesWide;
+
+            return new Rectangle(column * TileWidth, row * TileHeight, TileWidth, TileHeight);
         }
     }
 
