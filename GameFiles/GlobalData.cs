@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -58,6 +59,8 @@ namespace Basic2DGame.GameFiles
         /// The width of the window.
         /// </summary>
         public static int DesiredWindowWidth { get; set; }
+
+        public static int RenderScale { get; set; } = 8;
 
         /// <summary>
         /// The Height of the window.
@@ -128,7 +131,7 @@ namespace Basic2DGame.GameFiles
             DebugStrings = new()
             {
                 new DebugString($"FPS: {FpsSystem.FramesPerSecond}", -1, Color.White, false),
-                new DebugString($"Camera Position: {Camera.Position}", -1, Color.White, false)
+                new DebugString($"Camera Position: ({Camera.X}, {Camera.Y})", -1, Color.White, false)
             };
 
             // Changing the size of the window
@@ -147,7 +150,7 @@ namespace Basic2DGame.GameFiles
         {
             // Update the debug strings
             DebugStrings[0] = new DebugString($"FPS: {FpsSystem.FramesPerSecond}", -1, Color.White, false);
-            DebugStrings[1] = new DebugString($"Camera Position: {Camera.Position}", -1, Color.White, false);
+            DebugStrings[1] = new DebugString($"Camera Position: ({Camera.X}, {Camera.Y})", -1, Color.White, false);
 
             for (int i = 0; i < DebugStrings.Count; i++)
             {
