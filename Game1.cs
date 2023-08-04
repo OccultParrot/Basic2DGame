@@ -26,7 +26,8 @@ namespace Basic2DGame
 
             DebugString.Add("Press 'M' to view map details", -1, Color.White);
 
-            MapSystem.Initialize();
+            DebugString.Add($"{7 % 6}" , -1, Color.White);
+            MapSystem.Initialize(5);
 
             base.Initialize();
         }
