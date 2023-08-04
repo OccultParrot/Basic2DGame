@@ -53,3 +53,99 @@ for (int y = RoundedPosition.Y; y <= LastVisableTile.Y; y++)
 ```
 
 I really hope this works, because I have spent a while coming up with this idea.
+
+
+# Cameras Position and stuff...
+
+Stuff we need to know:
+The view port (Vector2), or the size of the area the camera can move around in.
+The cameras position (two int variables), or where the camera is on the view port.
+
+## The View Port
+
+The view port is the area of the map, in tiles times the area of a tile.
+
+```csharp
+// First we define the size of the map in tiles.
+int MapWidth = MapSystem.Map.TilesWide;
+int MapHeight = MapSystem.Map.TilesHigh;
+
+// Then we define the size of a tile.
+int TileWidth = MapSystem.Map.TileWidth;
+int TileHeight = MapSystem.Map.TileHeight;
+
+// Now we can find the size of the view port!
+int ViewPortWidth = MapWidth * TileWidth;
+int ViewPortHeight = MapHeight * TileHeight;
+
+// Now we can create the view port!
+Vector2 ViewPort = new Vector2(ViewPortWidth, ViewPortHeight);
+```
+
+## The Cameras Position
+
+The cameras position is the position of the camera on the view port.
+
+```csharp
+// The cameras position is 5, 45
+Camera.X = 5;
+Camera.Y = 45;
+```
+
+The cameras position is kinda the easy part.
+
+# Finding visible tiles
+
+Now that we have the cameras position, and the view port, we can find the visible tiles.
+
+First we need to know the position on the map of the top left tile.
+
+```csharp
+// The position of the top left tile is the cameras position divided by the tile size.
+int TopLeftTileX = Camera.X / TileWidth;
+int TopLeftTileY = Camera.Y / TileHeight;
+```	
+
+Now that we have the position of the top left tile, we can find the position of the bottom right tile.
+
+... I have no idea how to do this. lol
+
+first we figure out how wide and tall the camera is in tiles.
+
+```csharp
+// The width of the camera in tiles is the window width divided the camera zoom, divided by the tile width.
+int CameraWidthInTiles = (int)Math.Floor(WindowWidth / (Camera.Zoom * GlobalData.Scale) / TileWidth);
+
+// The height of the camera in tiles is the window height divided the camera zoom, divided by the tile height.
+int CameraHeightInTiles = (int)Math.Floor(WindowHeight / (Camera.Zoom * GlobalData.Scale) / TileHeight);
+```
+
+Now, The bottom right tile is the top left tile, plus the width and height of the camera in tiles.
+
+```csharp
+// Calculating the bottom right tile.
+int BottomRightTileX = TopLeftTileX + CameraWidthInTiles;
+int BottomRightTileY = TopLeftTileY + CameraHeightInTiles;
+```
+
+# Drawing the tiles
+
+Now that we have both the top left tile, and the bottom right tile, we can draw the tiles.
+
+```csharp
+// Looping through the tiles.
+for (int y = TopLeftTileY; y <= BottomRightTileY; y++)
+{
+	for (int x = TopLeftTileX; x <= BottomRightTileX; x++)
+	{
+		// Get the current tile.
+		Tile CurrentTile = MapSystem.Map.GetTile(x, y);
+		
+		// Draw the tile here.
+	}
+}
+```
+
+Here's to hoping this works. :/
+
+I think I finally have the tile stuff done for now, except for the rendering part. :D
