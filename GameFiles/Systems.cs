@@ -324,17 +324,27 @@ namespace Basic2DGame.GameFiles
 
         public static Dictionary<int, string> MapNames { get; set; }
 
+        private static Dictionary<int, string> MapPaths { get; set; }
+
         public static void Initialize(int MapID)
         {
             // Initialize the map
-            Map = new Map("Maps\\ExampleMap.xml");
+            Map = new Map("TileMaps\\ExampleMap.xml");
 
             CurrentMapID = MapID;
 
             MapNames = new Dictionary<int, string>()
             {
+                {-1, "Testing Environment" },
                 {0, "Example Map" }
             };
+
+            MapPaths = new Dictionary<int, string>()
+            {
+                {-1, "TileMaps\\testing_map.xml" },
+                {0, "TileMaps\\ExampleMap.xml" }
+            };
+
         }
 
         public static void Update()
