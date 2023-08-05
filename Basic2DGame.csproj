@@ -21,10 +21,10 @@
   <ItemGroup>
     <None Remove="Icon.ico" />
     <None Remove="Icon.bmp" />
-    <None Remove="Maps\ExampleMap.xml" />
+    <None Remove="Resources\TileMaps\ExampleMap.xml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Maps\ExampleMap.xml">
+    <Content Include="Resources\TileMaps\ExampleMap.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
