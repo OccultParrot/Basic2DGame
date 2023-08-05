@@ -24,10 +24,11 @@ namespace Basic2DGame
         {
             GlobalData.Initialize();
 
+            TextureManager.Load();
+
             DebugString.Add("Press 'M' to view map details", -1, Color.White);
 
-            DebugString.Add($"{7 % 6}" , -1, Color.White);
-            MapSystem.Initialize(5);
+            MapSystem.Initialize(0);
 
             base.Initialize();
         }
@@ -41,7 +42,9 @@ namespace Basic2DGame
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
+
             FpsSystem.Update((float)gameTime.ElapsedGameTime.TotalSeconds);
+
             GlobalData.Update();
 
             MapSystem.Update();
