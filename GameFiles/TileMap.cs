@@ -1,10 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Xml;
 
 namespace Basic2DGame.GameFiles
@@ -17,7 +13,7 @@ namespace Basic2DGame.GameFiles
 
         public static float Zoom { get; set; } = 1f;
 
-        public static Rectangle Viewport => new Rectangle(X, Y, GlobalData.DesiredWindowWidth, GlobalData.DesiredWindowHeight);
+        public static Rectangle Viewport => new(X, Y, GlobalData.DesiredWindowWidth, GlobalData.DesiredWindowHeight);
         public static Matrix TransformMatrix => Matrix.CreateTranslation(-X, -Y, 0f);
     }
 
@@ -57,7 +53,7 @@ namespace Basic2DGame.GameFiles
         {
             try
             {
-                XmlDocument xmlDoc = new XmlDocument();
+                XmlDocument xmlDoc = new();
                 xmlDoc.Load(xmlFilePath);
 
                 // Read map information
@@ -120,7 +116,7 @@ namespace Basic2DGame.GameFiles
     }
     public class TileSet
     {
-        public Texture2D Texture { get; set;}
+        public Texture2D Texture { get; set; }
         public int TileWidth { get; set; }
         public int TileHeight { get; set; }
         public int TilesWide { get; set; }
