@@ -1,5 +1,8 @@
 ﻿using Basic2DGame.GameFiles;
+using Basic2DGame.Systems;
+using Basic2DGame.Textures;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
@@ -10,50 +13,40 @@ namespace Basic2DGame
     public class Game1 : Game
     {
         private GraphicsDeviceManager _graphics;
-        private SpriteBatch _spriteBatch;
 
         public Game1()
         {
-            GlobalData.Graphics = new GraphicsDeviceManager(this);
+            Variables.Graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            GlobalData.Content = Content;
-            IsMouseVisible = true;
+            Variables.Content = Content;
+            IsMouseVisible = false;
+            
         }
 
         protected override void Initialize()
         {
-            GlobalData.Initialize();
 
-            TextureManager.Load();
-
-            DebugString.Add("Press 'M' to view map details", -1, Color.White);
-
-            MapSystem.Initialize(0);
+            #region Post Initalization Processing
 
             base.Initialize();
+
+            #endregion
         }
 
         protected override void LoadContent()
         {
-            GlobalData.SpriteBatch = new SpriteBatch(GraphicsDevice);
+            Variables.SpriteBatch = new SpriteBatch(GraphicsDevice);
+
+            Variables.Textures = new();
         }
 
         protected override void Update(GameTime gameTime)
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
-
-            FpsSystem.Update((float)gameTime.ElapsedGameTime.TotalSeconds);
-
-            GlobalData.Update();
-
-            MapSystem.Update();
-
-            InputSystem.Update();
-
-            
             #region Post-Update Processing
-            
+
+            Variables.PreviousKeyboardState = Keyboard.GetState();
             base.Update(gameTime);
 
             #endregion
@@ -63,8 +56,26 @@ namespace Basic2DGame
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            RenderSystem.GeneralRender();
+            RenderSystem.Draw();
+
+            #region Post Render Processing
+
             base.Draw(gameTime);
+
+            #endregion
         }
+    }
+
+    public struct Variables
+    {
+        public static KeyboardState PreviousKeyboardState { get; set; }
+
+        public static TextureManager Textures { get; set; }
+
+        public static ContentManager Content { get; set; }
+
+        public static GraphicsDeviceManager Graphics { get; set; }
+
+        public static SpriteBatch SpriteBatch { get; set; }
     }
 }
