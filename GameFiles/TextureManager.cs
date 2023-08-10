@@ -8,77 +8,74 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Basic2DGame.GameFiles
+namespace Basic2DGame.Textures
 {
-    internal struct TextureManager
+    public class TextureManager
     {
-        #region All the texture dictionaries
+        public Vector2 StandardTileSize = new(32, 32);
+        /* Plans for TextureManager
+         * We need dictionaries for the following texture types:
+         * 1. Tile Sets (For levels)
+         * 2. Ground Cover
+         * 3. Trees
+         * 4. Items
+         * 5. Entities
+         * 6. UI
+         * 7. Miscellaneous (Cursor, etc.)
+         * 
+         * We need the class to auto-populate with the textures from the Content Pipeline upon initialization.
+         * We need a method to get a source rectangle from a tile set or animation frame.
+         */
 
-        /// <summary>
-        /// A collection of all the UI textures used in the game.
-        /// </summary>
-        public static Dictionary<int, Texture2D> UIAtlas { get; private set; } = new()
+        public TextureManager() 
         {
-
-        };
-
-        /// <summary>
-        /// A collection of all the tile sets used in the game.
-        /// </summary>
-        public static Dictionary<int, Texture2D> TileSetAtlas { get; private set; } = new()
-        {
-
-        };
-
-        /// <summary>
-        /// A collection of all the item textures used in the game.
-        /// </summary>
-        public static Dictionary<int, Texture2D> ItemAtlas { get; private set; } = new()
-        {
-
-        };
-
-        /// <summary>
-        /// A collection of all the entity textures used in the game.
-        /// </summary>
-        public static Dictionary<int, Texture2D> EntityAtlas { get; private set; } = new()
-        {
-
-        };
-
-        #endregion
-
-        public static void Load()
-        {
-            try
+            TileSets = new()
             {
-                DebugString.Add("Loading textures...", 5, Color.Yellow);
 
-                // Loading all the textures
-                LoadUI();
-                LoadItemSprites();
-                LoadEntitySprites();
-                LoadTileSets();
+            };
 
-                DebugString.Add("Successfully loaded all textures!", 60, Color.Green);
-            }
-            catch (Exception e)
+            GroundCover = new()
             {
-                DebugString.Add("== Error loading textures! ==", 120, Color.Red);
-                DebugString.Add($"{e.Message}", 120, Color.Red);
-            }
+
+            };
+
+            Trees = new()
+            {
+
+            };
+
+            Items = new()
+            {
+
+            };
+
+            Entities = new()
+            {
+
+            };
+
+            UI = new()
+            {
+
+            };
+
+            Miscellaneous = new()
+            {
+                {0, Variables.Content.Load<Texture2D>("Misc\\Cursor") }
+            };
         }
 
-        #region All the load texture methods
-
-        private static void LoadUI() { }
-        private static void LoadItemSprites() { }
-        private static void LoadEntitySprites() { }
-        private static void LoadTileSets() 
+        // TODO: Make the get tile source method.
+        public Rectangle GetTileSource(int TileID, int TileSetID)
         {
-            TileSetAtlas.Add(-1, GlobalData.Content.Load<Texture2D>("testing_map_tileset"));
+            return Rectangle.Empty;
         }
-
-        #endregion
+        public Dictionary<int, Texture2D> TileSets { get; set; }
+        public Dictionary<int, Texture2D> GroundCover { get; set; }
+        public Dictionary<int, Texture2D> Trees { get; set; }
+        public Dictionary<int, Texture2D> Items { get; set; }
+        public Dictionary<int, Texture2D> Entities { get; set; }
+        public Dictionary<int, Texture2D> UI { get; set; }
+        public Dictionary<int, Texture2D> Miscellaneous { get; set; }
     }
 }
