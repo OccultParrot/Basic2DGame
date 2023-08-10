@@ -14,7 +14,7 @@ namespace Basic2DGame.GameFiles
     {
         public static bool CatchPressedKey(Keys key)
         {
-            if (Keyboard.GetState().IsKeyDown(key) && !GlobalData.PreviousKeyboardState.IsKeyDown(key))
+            if (Keyboard.GetState().IsKeyDown(key) && !Variables.PreviousKeyboardState.IsKeyDown(key))
             {
                 return true;
             }
