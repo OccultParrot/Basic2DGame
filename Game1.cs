@@ -6,13 +6,13 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
+using System.Diagnostics;
 using System.Linq;
 
 namespace Basic2DGame
 {
     public class Game1 : Game
     {
-        private GraphicsDeviceManager _graphics;
 
         public Game1()
         {
@@ -37,6 +37,8 @@ namespace Basic2DGame
         {
             Variables.SpriteBatch = new SpriteBatch(GraphicsDevice);
 
+            LevelManager.Load();
+
             Variables.Textures = new();
         }
 
@@ -44,6 +46,7 @@ namespace Basic2DGame
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
+
             #region Post-Update Processing
 
             Variables.PreviousKeyboardState = Keyboard.GetState();
@@ -56,7 +59,7 @@ namespace Basic2DGame
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            RenderSystem.Draw();
+
 
             #region Post Render Processing
 
