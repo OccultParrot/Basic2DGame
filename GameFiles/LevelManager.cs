@@ -176,11 +176,11 @@ namespace Basic2DGame.GameFiles
                 {
                     // Setting the tile on the current layer at the specific coordinates to the tile from the xml file.
                     currentLayer.Tiles[int.Parse(tile.Attributes["x"].Value), int.Parse(tile.Attributes["y"].Value)] = new Tile()
-                        {
-                            ID = int.Parse(tile.Attributes["tile"].Value),
-                            Rotation = int.Parse(tile.Attributes["rot"].Value),
-                            FlipX = bool.Parse(tile.Attributes["flipX"].Value)
-                        };
+                    {
+                        ID = int.Parse(tile.Attributes["tile"].Value),
+                        Rotation = int.Parse(tile.Attributes["rot"].Value),
+                        FlipX = bool.Parse(tile.Attributes["flipX"].Value)
+                    };
                     Debug.WriteLine($"({tile.Attributes["x"].Value}, {tile.Attributes["y"].Value}) {tile.Attributes["tile"].Value}");
                 }
             }
@@ -192,37 +192,78 @@ namespace Basic2DGame.GameFiles
             // TODO: Write the level xml saving.
         }
 
-        private Tile GetTile(int x, int y, int layer)
+        public Tile GetTile(int x, int y, int layer)
         {
-            // Returns the value of a tile from a specific position on the level
-            // TODO: Write the GetTile method.
-
-            return new(); // TEMPORARY! REMOVE WHEN METHOD IS WRITTEN.
+            // That was way easier than I thought it would be.
+            return layer switch
+            {
+                0 => Layer0.Tiles[x, y],
+                1 => Layer1.Tiles[x, y],
+                2 => Layer2.Tiles[x, y],
+                3 => Layer3.Tiles[x, y],
+                4 => Layer4.Tiles[x, y],
+                5 => Layer5.Tiles[x, y],
+                _ => throw new ArgumentException($"Error in map file: {XmlPath}! Layer numbers must be 0 to 5. Incorrect layer was {layer}")
+            };
         }
 
-        private void SetTile(int x, int y, Tile value)
+        public void SetTile(int x, int y, int layer, Tile value)
         {
-            // Sets the value of a tile from a specific position on the level
-            // TODO: Write the SetTile method.
+            switch (layer)
+            {
+                default:
+                    throw new ArgumentException($"Error in map file: {XmlPath}! Layer numbers must be 0 to 5. Incorrect layer was {layer}");
+
+                case 0:
+                    {
+                        Layer0.Tiles[x, y] = value;
+                        break;
+                    }
+                case 1:
+                    {
+                        Layer1.Tiles[x, y] = value;
+                        break;
+                    }
+                case 2:
+                    {
+                        Layer2.Tiles[x, y] = value;
+                        break;
+                    }
+                case 3:
+                    {
+                        Layer3.Tiles[x, y] = value;
+                        break;
+                    }
+                case 4:
+                    {
+                        Layer4.Tiles[x, y] = value;
+                        break;
+                    }
+                case 5:
+                    {
+                        Layer5.Tiles[x, y] = value;
+                        break;
+                    }
+            }
         }
-    }
 
-    public class Tile
-    {
-        public int ID { get; set; }
-        public int Rotation { get; set; }
-        public bool FlipX { get; set; }
-    }
+        public class Tile
+        {
+            public int ID { get; set; }
+            public int Rotation { get; set; }
+            public bool FlipX { get; set; }
+        }
 
-    public struct Layer
-    {
-        public string Name { get; set; }
-        public int Number { get; set; }
+        public struct Layer
+        {
+            public string Name { get; set; }
+            public int Number { get; set; }
 
-        public Tile[,] Tiles { get; set; }
-    }
-    public interface ILayers
-    {
-        
+            public Tile[,] Tiles { get; set; }
+        }
+        public interface ILayers
+        {
+
+        }
     }
 }
