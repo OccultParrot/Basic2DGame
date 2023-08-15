@@ -181,7 +181,7 @@ namespace Basic2DGame.GameFiles
                             Rotation = int.Parse(tile.Attributes["rot"].Value),
                             FlipX = bool.Parse(tile.Attributes["flipX"].Value)
                         };
-                    Debug.WriteLine($"({tile.Attributes["x"].Value}, {tile.Attributes["y"].Value}), {tile.Attributes["tile"].Value}");
+                    Debug.WriteLine($"({tile.Attributes["x"].Value}, {tile.Attributes["y"].Value}) {tile.Attributes["tile"].Value}");
                 }
             }
         }
