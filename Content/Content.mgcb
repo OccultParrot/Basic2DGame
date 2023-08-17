@@ -46,7 +46,7 @@
 /processorParam:TextureFormat=Color
 /build:Misc/cursor.png
 
-#begin Misc/cursor.png
+#begin tilesets/testing_map.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -56,5 +56,5 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Misc/cursor.png
+/build:tilesets/testing_map.png
 
