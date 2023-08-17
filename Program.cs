@@ -1,3 +1,3 @@
 ﻿
-using var game = new Basic2DGame.Game1();
+using var game = new Basic2DGame.GameFiles.Game1();
 game.Run();
