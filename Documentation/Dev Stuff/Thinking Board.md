@@ -260,5 +260,29 @@ public Vector2 Position {
 ## Zoom
 It just returns the `_zoom` property, but is a private set.
 
+## The entire camera struct
+
+```csharp
+public struct Camera
+{
+	// The properties
+	private int _x;
+	private int _y;
+	private float _zoom;
+
+	// The fields
+	public Vector2 Position
+	{
+		get {
+			return new Vector2(_x,_y);
+		}
+		set {
+			_x = value.X;
+			_y = value.Y;
+		}
+	}
+	public float Zoom { get; set; }
+}
+```
 
 
