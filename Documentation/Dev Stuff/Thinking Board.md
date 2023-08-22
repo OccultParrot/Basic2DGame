@@ -233,3 +233,32 @@ for (int y = 0; y < CurrentLevel.LevelHeight; y++)
 }
 ```
 
+# Camera Struct
+In the camera struct we need to hold the following information:
+The position of the camera in the `_x` and the `_y` properties
+The zoom of the camera in the `_zoom` property.
+
+There will be two fields in the struct
+`Position`,
+and `Zoom`.
+
+## Position
+When you get the position field, it will return a new Vector2 holding the `_x` and `_y` properties.
+
+```csharp
+public Vector2 Position {
+	get {
+		return new Vector2(_x, _y)
+	};
+	set {
+		_x = value.X;
+		_y = value.Y;
+	}
+}
+```
+
+## Zoom
+It just returns the `_zoom` property, but is a private set.
+
+
+
