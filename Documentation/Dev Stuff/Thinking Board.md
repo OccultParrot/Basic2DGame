@@ -281,7 +281,7 @@ public struct Camera
 			_y = value.Y;
 		}
 	}
-	public float Zoom { get; set; }
+	public float Zoom { get; private set; }
 }
 ```
 
