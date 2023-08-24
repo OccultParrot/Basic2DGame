@@ -15,6 +15,8 @@ namespace Basic2DGame.GameFiles
     {
         public static KeyboardState PreviousKeyboardState { get; set; }
 
+        public static MouseState PreviousMouseState { get; set; }
+
         public static TextureManager Textures { get; set; }
 
         public static ContentManager Content { get; set; }
@@ -22,7 +24,5 @@ namespace Basic2DGame.GameFiles
         public static GraphicsDeviceManager Graphics { get; set; }
 
         public static SpriteBatch SpriteBatch { get; set; }
-
-        public static Vector2 TEMPORARY; // DELEAT THIS EVENTUALY
     }
 }
