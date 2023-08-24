@@ -38,6 +38,7 @@ namespace Basic2DGame.GameFiles
             LevelManager.Load();
 
             Variables.Textures = new();
+            Variables.Textures.Load();
         }
 
         protected override void Update(GameTime gameTime)
@@ -46,17 +47,24 @@ namespace Basic2DGame.GameFiles
                 Exit();
 
             if (Keyboard.GetState().IsKeyDown(Keys.W))
-                Variables.TEMPORARY.Y -= 1;
+                Camera.Position += new Vector2(0, -1);
             if (Keyboard.GetState().IsKeyDown(Keys.S))
-                Variables.TEMPORARY.Y += 1;
+                Camera.Position -= new Vector2(0, -1);
             if (Keyboard.GetState().IsKeyDown(Keys.A))
-                Variables.TEMPORARY.X -= 1;
+                Camera.Position += new Vector2(-1, 0);
             if (Keyboard.GetState().IsKeyDown(Keys.D))
-                Variables.TEMPORARY.X += 1;
+                Camera.Position -= new Vector2(-1, 0);
+
+            if (Mouse.GetState().ScrollWheelValue > Variables.PreviousMouseState.ScrollWheelValue)
+                Camera.Zoom += 0.1f;
+            if (Mouse.GetState().ScrollWheelValue < Variables.PreviousMouseState.ScrollWheelValue)
+                Camera.Zoom -= 0.1f;
 
             #region Post-Update Processing
 
             Variables.PreviousKeyboardState = Keyboard.GetState();
+            Variables.PreviousMouseState = Mouse.GetState();
+
             base.Update(gameTime);
 
             #endregion
