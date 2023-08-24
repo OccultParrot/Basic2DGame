@@ -50,8 +50,8 @@ namespace Basic2DGame.GameFiles.Managers
 
             // Zoom and stuff are unused for now.
             Level CurrentLevel = LevelManager.CurrentLevel;
-            Vector2 CameraPosition = Variables.TEMPORARY;
-            float CameraZoom = 5f;
+            Vector2 CameraPosition = Camera.Position;
+            float CameraZoom = Camera.Zoom;
 
             for (int y = 0; y < CurrentLevel.Height; y++)
             {
