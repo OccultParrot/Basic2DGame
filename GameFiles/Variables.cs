@@ -1,4 +1,5 @@
 ﻿using Basic2DGame.GameFiles.Managers;
+using Basic2DGame.GameFiles.Sprites;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
