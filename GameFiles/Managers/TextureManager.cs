@@ -22,19 +22,19 @@ namespace Basic2DGame.GameFiles.Managers
 
         public TextureManager()
         {
-            TileSets = new();
+            TileSets = new();      // 0
 
-            GroundCover = new();
+            GroundCover = new();   // 1
 
-            Trees = new();
+            Trees = new();         // 2
 
-            Items = new();
+            Items = new();         // 3
 
-            Entities = new();
+            Entities = new();      // 4
 
-            UI = new();
+            UI = new();            // 5
 
-            Miscellaneous = new();
+            Miscellaneous = new(); // 6
         }
 
         public void Load()
@@ -53,7 +53,8 @@ namespace Basic2DGame.GameFiles.Managers
             // Add all UI
 
             // Add all miscellaneous textures
-            Miscellaneous.Add(0, Variables.Content.Load<Texture2D>("Misc\\Cursor"));
+            Miscellaneous.Add(0, Variables.Content.Load<Texture2D>("Misc\\cursor"));
+            Miscellaneous.Add(1, Variables.Content.Load<Texture2D>("Misc\\bob"));
 
             // Add all modded textures
 
