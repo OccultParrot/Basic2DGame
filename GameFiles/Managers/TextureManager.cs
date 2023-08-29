@@ -69,6 +69,11 @@ namespace Basic2DGame.GameFiles.Managers
             return new Rectangle(column * LevelManager.Levels[TileSetID].TileWidth, row * LevelManager.Levels[TileSetID].TileHeight, LevelManager.Levels[TileSetID].TileWidth, LevelManager.Levels[TileSetID].TileHeight);
         }
 
+        public Texture2D GetTextureFromAtlas(int textureAtlasID, int textureID)
+        {
+            // TODO: Write this method
+        }
+
         public Dictionary<int, Texture2D> TileSets { get; set; }
         public Dictionary<int, Texture2D> GroundCover { get; set; }
         public Dictionary<int, Texture2D> Trees { get; set; }
