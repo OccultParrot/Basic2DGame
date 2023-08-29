@@ -35,8 +35,6 @@ namespace Basic2DGame.GameFiles.Managers
             DrawUI();
             DrawCursor();
 
-            // FOR TESTING
-
             Variables.SpriteBatch.End();
         }
 
