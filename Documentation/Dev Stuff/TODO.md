@@ -1,3 +1,4 @@
 ﻿# General Plans
 
-Camera struct
+ - [x] Camera struct
+ - [ ] Basic sprite class
