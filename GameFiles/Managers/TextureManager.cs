@@ -72,6 +72,7 @@ namespace Basic2DGame.GameFiles.Managers
         public Texture2D GetTextureFromAtlas(int textureAtlasID, int textureID)
         {
             // TODO: Write this method
+            return new Texture2D(Variables.Graphics.GraphicsDevice, 1, 1); // This is temporary
         }
 
         public Dictionary<int, Texture2D> TileSets { get; set; }
