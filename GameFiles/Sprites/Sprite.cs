@@ -11,45 +11,14 @@ namespace Basic2DGame.GameFiles.Sprites;
 
 public class Sprite
 {
-    // Position properties
-    private int _x;
-    private int _y;
-
-    // Texture properties
+    // The Texture
     public Texture2D Texture { get; set; } // Public temporarily.
 
+    // Component List. All unique information is stored here.
     public List<SpriteComponent> Components { get; private set; }
 
-    // Public Properties
-    public Vector2 MapPosition
-    {
-        get
-        {
-            return new Vector2(_x, _y);
-        }
-        set
-        {
-            _x = (int)value.X;
-            _y = (int)value.Y;
-        }
-    }
-
-public Vector2 ScreenPosition
-{
-    get
-    {
-        return
-            (
-            new Vector2(
-            MapPosition.X * LevelManager.CurrentLevel.Width,
-            MapPosition.Y * LevelManager.CurrentLevel.Height
-            ) + 
-            Camera.Position);
-    }
-}
-
     // Constructor
-    public Sprite(int textureID, int textureAtlas, Vector2 position, List<SpriteComponent> components)
+    public Sprite(int textureID, int textureAtlas, List<SpriteComponent> components)
     {
         MapPosition = position;
         Texture = Variables.Textures.GetTextureFromAtlas(textureAtlas, textureID);
