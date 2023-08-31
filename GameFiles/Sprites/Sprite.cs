@@ -9,8 +9,13 @@ using System;
 
 namespace Basic2DGame.GameFiles.Sprites;
 
+// A sprite is a game object that will ALWAYS have a texture.
 public class Sprite
 {
+    public bool IsAlive = true;
+
+    public bool IsRendered = true;
+
     // The Texture
     public Texture2D Texture { get; set; } // Public temporarily.
 
@@ -20,9 +25,37 @@ public class Sprite
     // Constructor
     public Sprite(int textureID, int textureAtlas, List<SpriteComponent> components)
     {
-        MapPosition = position;
         Texture = Variables.Textures.GetTextureFromAtlas(textureAtlas, textureID);
+
         Components = components;
+    }
+
+    public Sprite(int textureID, int textureAtlas)
+    {
+        Texture = Variables.Textures.GetTextureFromAtlas(textureAtlas, textureID);
+
+        Components = new();
+    }
+
+    public Sprite(Texture2D texture, List<SpriteComponent> components)
+    {
+        Texture = texture;
+        Components = components;
+    }
+
+    public void Update()
+    {
+
+    }
+
+    public void Draw()
+    {
+        Vector2 position = new(0, 0); // We need to set this to the screen position if sprite has that component.
+
+        if (IsRendered)
+        {
+
+        }
     }
 
     public void SetComponent<T>(T component) where T : SpriteComponent
