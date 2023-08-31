@@ -1,4 +1,8 @@
 ﻿# General Plans
 
  - [x] Camera struct
- - [ ] Basic sprite class
+ - [x] Basic sprite class
+     - [ ] Add fast component checking
+     - [ ] Add fast component getting & setting
+ - [x] Basic Sprite component
+ - [x] Position Component
