@@ -13,8 +13,6 @@ namespace Basic2DGame.GameFiles
 
         public static MouseState PreviousMouseState { get; set; }
 
-        public static TextureManager Textures { get; set; }
-
         public static ContentManager Content { get; set; }
 
         public static GraphicsDeviceManager Graphics { get; set; }
