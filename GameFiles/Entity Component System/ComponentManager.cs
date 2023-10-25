@@ -7,43 +7,19 @@ namespace Basic2DGame.GameFiles.Entity_Component_System.ComponentManager;
 public class ComponentManager
 {
     private readonly Dictionary<Type, Dictionary<uint, IComponent>> _components = new();
-    private readonly List<Type> _componentTypes = new()
-    {
-        typeof(HealthComponent), typeof(PositionComponent), typeof(BoundsComponent)
-    };
 
-    public ComponentManager()
-    {
-        for (int i = 0; i < _componentTypes.Count; i++)
-            _components.Add(_componentTypes[i], new());
-    }
+    public ComponentManager() { }
 
     public void AddComponent(uint EntityID, IComponent componentType)
     {
-        switch (componentType)
-        {
-            // If componentType is of type HealthComponent, add it to the dictionary.
-            case HealthComponent healthComponent:
-                if (!_components[typeof(HealthComponent)].ContainsKey(EntityID))
-                    _components[typeof(HealthComponent)].Add(EntityID, healthComponent);
-                else
-                    _components[typeof(HealthComponent)][EntityID] = healthComponent;
-                break;
-            // If componentType is of type PositionComponent, add it to the dictionary.
-            case PositionComponent positionComponent:
-                if (!_components[typeof(PositionComponent)].ContainsKey(EntityID))
-                    _components[typeof(PositionComponent)].Add(EntityID, positionComponent);
-                else
-                    _components[typeof(PositionComponent)][EntityID] = positionComponent;
-                break;
-            // If componentType if of type BoundsComponent, add it to the dictionary.
-            case BoundsComponent boundsComponent:
-                if (!_components[typeof(BoundsComponent)].ContainsKey(EntityID))
-                    _components[typeof(BoundsComponent)].Add(EntityID, boundsComponent);
-                else
-                    _components[typeof(BoundsComponent)][EntityID] = boundsComponent;
-                break;
-        }
+        if (!_components.ContainsKey(componentType.GetType()))
+            _components.Add(componentType.GetType(), new());
+
+        if (_components[componentType.GetType()].ContainsKey(EntityID))
+            _components[componentType.GetType()][EntityID] = componentType;
+
+        else
+            _components[componentType.GetType()].Add(EntityID, componentType);
     }
     public void RemoveComponent(uint EntityID, IComponent componentType)
     {
