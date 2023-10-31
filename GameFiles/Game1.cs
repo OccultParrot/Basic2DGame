@@ -12,6 +12,7 @@ namespace Basic2DGame.GameFiles
     public class Game1 : Game
     {
         public Entity e1 = new();
+        public Entity e2 = new();
 
         public Game1()
         {
@@ -25,7 +26,12 @@ namespace Basic2DGame.GameFiles
         protected override void Initialize()
         {
             ComponentManager.AddComponent(e1.ID, new HealthComponent(-10));
+            ComponentManager.AddComponent(e2.ID, new HealthComponent(-10));
 
+            ComponentManager.AddComponent(e1.ID, new BoundsComponent(new Vector2(10, 10)));
+            ComponentManager.AddComponent(e2.ID, new PositionComponent(new Vector2(10, 10)));
+
+            ComponentManager.RemoveComponent<HealthComponent>(e1.ID);
             #region Post Initalization Processing
 
             base.Initialize();
