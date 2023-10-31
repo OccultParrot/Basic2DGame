@@ -1,4 +1,5 @@
 ﻿using Basic2DGame.GameFiles.Entity_Component_System.Components;
+using Microsoft.Win32.SafeHandles;
 using System;
 using System.Collections.Generic;
 
@@ -18,6 +19,9 @@ public static class ComponentManager
 
         else
             _components[component.GetType()].Add(EntityID, component);
+
+        DebugLogger.Open("EntityLog");
+        DebugLogger.WriteLine($"Added {component.GetType().Name} to ID: {EntityID}");
     }
     public static void RemoveComponent<T>(uint EntityID) where T : IComponent
     {
@@ -25,6 +29,8 @@ public static class ComponentManager
             return;
         if (_components[typeof(T)].ContainsKey(EntityID))
             _components[typeof(T)].Remove(EntityID);
+        DebugLogger.Open("EntityLog");
+        DebugLogger.WriteLine($"Removed {typeof(T).Name} from ID: {EntityID}");
     }
 
     /// <summary>
