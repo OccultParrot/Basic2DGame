@@ -1,4 +1,6 @@
-﻿namespace Basic2DGame.GameFiles.Entity_Component_System;
+﻿using System;
+
+namespace Basic2DGame.GameFiles.Entity_Component_System;
 
 public struct Entity
 {
@@ -6,6 +8,12 @@ public struct Entity
     public uint ID { get; private set; }
     public Entity()
     {
-        ID = _id++;
+        ID = ++_id;
+        Console.WriteLine($"Entity created with ID: {ID}");
+    }
+
+    public void AssignAsPlayer()
+    {
+        ID = 0;
     }
 }
