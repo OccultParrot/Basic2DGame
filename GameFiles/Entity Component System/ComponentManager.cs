@@ -4,69 +4,49 @@ using System.Collections.Generic;
 
 namespace Basic2DGame.GameFiles.Entity_Component_System.ComponentManager;
 
-public class ComponentManager
+public static class ComponentManager
 {
-    private readonly Dictionary<Type, Dictionary<uint, IComponent>> _components = new();
+    private static readonly Dictionary<Type, Dictionary<uint, IComponent>> _components = new();
 
-    public ComponentManager() { }
-
-    public void AddComponent(uint EntityID, IComponent componentType)
+    public static void AddComponent(uint EntityID, IComponent component)
     {
-        if (!_components.ContainsKey(componentType.GetType()))
-            _components.Add(componentType.GetType(), new());
+        if (!_components.ContainsKey(component.GetType()))
+            _components.Add(component.GetType(), new());
 
-        if (_components[componentType.GetType()].ContainsKey(EntityID))
-            _components[componentType.GetType()][EntityID] = componentType;
+        if (_components[component.GetType()].ContainsKey(EntityID))
+            _components[component.GetType()][EntityID] = component;
 
         else
-            _components[componentType.GetType()].Add(EntityID, componentType);
+            _components[component.GetType()].Add(EntityID, component);
     }
-    public void RemoveComponent(uint EntityID, IComponent componentType)
+    public static void RemoveComponent<T>(uint EntityID) where T : IComponent
     {
-        switch (componentType)
-        {
-            // If componentType is of type HealthComponent, remove it from the dictionary.
-            case HealthComponent:
-                if (_components[typeof(HealthComponent)].ContainsKey(EntityID))
-                    _components[typeof(HealthComponent)].Remove(EntityID);
-                break;
-            // If componentType is of type PositionComponent, remove it from the dictionary.
-            case PositionComponent:
-                if (_components[typeof(PositionComponent)].ContainsKey(EntityID))
-                    _components[typeof(PositionComponent)].Remove(EntityID);
-                break;
-            // If componentType is of type BoundsComponent, remove it from the dictionary.
-            case BoundsComponent:
-                if (_components[typeof(PositionComponent)].ContainsKey(EntityID))
-                    _components[typeof(PositionComponent)].Remove(EntityID);
-                break;
-        }
+        if (!_components.ContainsKey(typeof(T)))
+            return;
+        if (_components[typeof(T)].ContainsKey(EntityID))
+            _components[typeof(T)].Remove(EntityID);
     }
-    public IComponent GetComponent(uint EntityID, IComponent componentType)
+
+    /// <summary>
+    /// Returns the component of the specified type attached to the entity.
+    /// </summary>
+    /// <typeparam name="T">The type of the component.</typeparam>
+    /// <param name="EntityID">The ID of the Entity. Entities are constructed with a unique ID</param>
+    /// <returns></returns>
+    public static T GetComponent<T>(uint EntityID) where T : IComponent
     {
-        switch (componentType)
+        if (!_components.ContainsKey(typeof(T)))
+            return default;
+        return (T)_components[typeof(T)][EntityID];
+    }
+
+    public static uint[] GetAllEntitiesWithComponent<T>() where T : IComponent
+    {
+        var entities = new List<uint>();
+        foreach (var component in _components[typeof(T)])
         {
-            // If componentType is of type HealthComponent, return the value of the entity's component if any.
-            case HealthComponent:
-                if (_components[typeof(HealthComponent)].ContainsKey(EntityID))
-                    return _components[typeof(HealthComponent)][EntityID];
-                else
-                    return null;
-            // If componentType is of type PositionComponent, return the value of the entity's component if any.
-            case PositionComponent:
-                if (_components[typeof(PositionComponent)].ContainsKey(EntityID))
-                    return _components[typeof(PositionComponent)][EntityID];
-                else
-                    return null;
-            // If componentType is of type BoundsComponent, return the value of the entity's component if any.
-            case BoundsComponent:
-                if (_components[typeof(BoundsComponent)].ContainsKey(EntityID))
-                    return _components[typeof(BoundsComponent)][EntityID];
-                else
-                    return null;
-            // Return null if all are not true.
-            default:
-                return null;
+            entities.Add(component.Key);
         }
+        return entities.ToArray();
     }
 }
