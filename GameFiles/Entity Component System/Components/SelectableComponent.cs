@@ -19,13 +19,13 @@ internal class SelectableComponent : IComponent
     public event EventHandler OnSelected;
     public SelectableComponent() { }
 
-    void IComponent.Update()
+    public void Update()
     {
         if (IsSelected)
             // Raise the event
             OnSelected?.Invoke(this, EventArgs.Empty);
     }
-    void IComponent.ChangeValue(string valueName, object value)
+    public void ChangeValue(string valueName, object value)
     {
         switch (valueName)
         {

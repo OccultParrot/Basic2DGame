@@ -18,9 +18,10 @@ public struct HealthComponent : IComponent
         IsDead = false;
     }
 
-    void IComponent.Update()
+    public void Update()
     {
-        
+        DebugLogger.Open("IsDeadTest");
+        DebugLogger.WriteLine(IsDead);
     }
 
     /// <summary>
@@ -28,7 +29,7 @@ public struct HealthComponent : IComponent
     /// </summary>
     /// <param name="valueName">Health, MaxHealth, IsDead</param>
     /// <param name="value">The value that you want to change it to.</param>
-    void IComponent.ChangeValue(string valueName, object value)
+    public void ChangeValue(string valueName, object value)
     {
         switch (valueName)
         {

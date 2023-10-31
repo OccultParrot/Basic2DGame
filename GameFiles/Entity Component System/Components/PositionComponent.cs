@@ -29,12 +29,12 @@ namespace Basic2DGame.GameFiles.Entity_Component_System.Components
             Position = position;
         }
 
-        void IComponent.Update()
+        public void Update()
         {
             
         }
 
-        void IComponent.ChangeValue(string valueName, object value)
+        public void ChangeValue(string valueName, object value)
         {
             switch (valueName)
             {

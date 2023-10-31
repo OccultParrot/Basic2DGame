@@ -11,7 +11,7 @@ namespace Basic2DGame.GameFiles.Entity_Component_System.Components
         /// <summary>
         /// Refreshes data the systems need to know about.
         /// </summary>
-        internal void Update();
+        public void Update();
 
         public void ChangeValue(string valueName, object value);
     }

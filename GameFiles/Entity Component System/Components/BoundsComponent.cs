@@ -29,13 +29,13 @@ namespace Basic2DGame.GameFiles.Entity_Component_System.Components
             Size = new Vector2(width, height);
         }
 
-        void IComponent.Update()
+        public void Update()
         {
             
         }
 
         // Changes the value of a variable.
-        void IComponent.ChangeValue(string valueName, object value)
+        public void ChangeValue(string valueName, object value)
         {
             switch (valueName)
             {
