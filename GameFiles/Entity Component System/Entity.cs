@@ -9,7 +9,8 @@ public struct Entity
     public Entity()
     {
         ID = ++_id;
-        Console.WriteLine($"Entity created with ID: {ID}");
+        DebugLogger.Open("EntityLog");
+        DebugLogger.WriteLine($"Entity created with ID: {ID}");
     }
 
     public void AssignAsPlayer()
