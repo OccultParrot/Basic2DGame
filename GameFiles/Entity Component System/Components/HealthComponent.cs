@@ -18,10 +18,8 @@ public struct HealthComponent : IComponent
         IsDead = false;
     }
 
-    public void Update()
+    public readonly void Update()
     {
-        DebugLogger.Open("IsDeadTest");
-        DebugLogger.WriteLine(IsDead);
     }
 
     /// <summary>
