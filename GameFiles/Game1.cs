@@ -2,10 +2,16 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
+using Basic2DGame.GameFiles.Entity_Component_System;
+using Basic2DGame.GameFiles.Entity_Component_System.ComponentManager;
+using Basic2DGame.GameFiles.Entity_Component_System.Components;
+using Basic2DGame.GameFiles.Entity_Component_System.Systems;
+
 namespace Basic2DGame.GameFiles
 {
     public class Game1 : Game
     {
+        public Entity e1 = new();
 
         public Game1()
         {
@@ -18,6 +24,7 @@ namespace Basic2DGame.GameFiles
 
         protected override void Initialize()
         {
+            ComponentManager.AddComponent(e1.ID, new HealthComponent(-10));
 
             #region Post Initalization Processing
 
@@ -35,6 +42,7 @@ namespace Basic2DGame.GameFiles
         {
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
+            HealthSystem.Update();
 
             #region Post-Update Processing
 
